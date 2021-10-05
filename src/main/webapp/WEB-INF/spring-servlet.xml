@@ -8,62 +8,69 @@
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd">
 
 	<context:annotation-config />
-	<context:component-scan 
+	<context:component-scan
 		base-package="com.bitacademy.myportal.controllers">
-		<context:exclude-filter type="annotation" 
-			expression="org.springframework.stereotype.Service"/>
-		<context:exclude-filter type="annotation" 
-			expression="org.springframework.stereotype.Repository"/>			
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Repository" />
 	</context:component-scan>
-	
+
 	<!-- 정적 자원 처리를 위해 디폴터 서블릿 위임 핸들러 -->
-	<mvc:annotation-driven >
-	  <!-- 메세지 컨버터 등록 -->
-	  <mvc:message-converters>
-	    <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
-	      <property name="supportedMediaTypes">
-	           <list>
-	               <!--  object, map 타입을 json으로 변환해주는 Jackson Converter -->
-	               <value>application/json;charset=UTF-8</value>
-	           </list>
-	      </property>
-	    </bean>
-	  </mvc:message-converters>
+	<mvc:annotation-driven>
+		<!-- 메세지 컨버터 등록 -->
+		<mvc:message-converters>
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<!-- object, map 타입을 json으로 변환해주는 Jackson Converter -->
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+		</mvc:message-converters>
 	</mvc:annotation-driven>
 	<mvc:default-servlet-handler />
-	
+
 	<!-- View Resolver -->
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.JstlView" /><!-- 뷰 클래스 -->
-		<property name="prefix"
-			value="/WEB-INF/views/" /><!-- 접두어 -->
-		<property name="suffix"
-			value=".jsp" />	<!-- 접미어 -->
-	</bean> 
-	
-	<!--  Interceptors -->
+		<property name="prefix" value="/WEB-INF/views/" /><!-- 접두어 -->
+		<property name="suffix" value=".jsp" />	<!-- 접미어 -->
+	</bean>
+
+	<!-- Interceptors -->
 	<mvc:interceptors>
-	    <mvc:interceptor>
-	          <mvc:mapping path="/board/**"/>
-	          <bean class="com.bitacademy.myportal.InterCeptors.Myinterceptor"/>
-	    </mvc:interceptor>
-	    <mvc:interceptor>
-	         <mvc:mapping path="/board/**)"/>
-	         <bean class="com.bitacademy.myportal.InterCeptors.Myinterceptor2"/>
-	    </mvc:interceptor>
-	    <!-- Board 서비스에는 기본적으로 로그인 필요 -->
-	    <!--  /board/list에는 모든 사용자가 열람할 수 있도록 세팅 -->
-	    <mvc:interceptor>
-	          <mvc:mapping path="/board/**"/>
-	          <mvc:exclude-mapping path="/board/list/**"/>
-	          <mvc:exclude-mapping path="/board"/>
-	          <mvc:exclude-mapping path="/board/"/>
-	          <bean class="com.bitacademy.myportal.InterCeptors.AuthInterceptor"/>
-	    </mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/board/**" />
+			<bean class="com.bitacademy.myportal.InterCeptors.Myinterceptor" />
+		</mvc:interceptor>
+		<mvc:interceptor>
+			<mvc:mapping path="/board/**)" />
+			<bean
+				class="com.bitacademy.myportal.InterCeptors.Myinterceptor2" />
+		</mvc:interceptor>
+		<!-- Board 서비스에는 기본적으로 로그인 필요 -->
+		<!-- /board/list에는 모든 사용자가 열람할 수 있도록 세팅 -->
+		<mvc:interceptor>
+			<mvc:mapping path="/board/**" />
+			<mvc:exclude-mapping path="/board/list/**" />
+			<mvc:exclude-mapping path="/board" />
+			<mvc:exclude-mapping path="/board/" />
+			<bean
+				class="com.bitacademy.myportal.InterCeptors.AuthInterceptor" />
+		</mvc:interceptor>
 	</mvc:interceptors>
-	
+
+	<!-- Message Source: 반드시 bean id를 messageSource로 설정해야 한다. -->
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+       <property name="basenames" value="messages/messages_ko"/>
+       <property name="defaultEncoding" value="UTF-8" />
+	</bean>
 
 </beans>
 
